@@ -1,0 +1,62 @@
+[
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "List of Items"
+        ],
+        "block_idx": 0,
+        "level": 0
+    },
+    {
+        "tag": "list_item",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "1. First Item"
+        ],
+        "block_idx": 0,
+        "level": 1
+    },
+    {
+        "tag": "list_item",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "2. Second Item"
+        ],
+        "block_idx": 0,
+        "level": 1
+    },
+    {
+        "tag": "para",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "List of Items"
+        ],
+        "block_idx": 0,
+        "level": 1
+    },
+    {
+        "tag": "list_item",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "1. First Item"
+        ],
+        "block_idx": 0,
+        "level": 1
+    },
+    {
+        "tag": "list_item",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "2. Second Item"
+        ],
+        "block_idx": 0,
+        "level": 1
+    }
+]
