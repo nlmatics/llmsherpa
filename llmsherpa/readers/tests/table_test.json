@@ -1,0 +1,256 @@
+[{
+    "tag": "header",
+    "page_idx": 0,
+    "block_class": "cls_0",
+    "sentences": [
+        "5.1 Experimental Setup"
+    ],
+    "block_idx": 0,
+    "level": 0
+},
+{
+    "block_class": "cls_11",
+    "block_idx": 112,
+    "left": 130.05,
+    "level": 1,
+    "name": "5.1 Experimental Setup",
+    "page_idx": 5,
+    "table_rows": [
+        {
+            "block_idx": 112,
+            "cells": [
+                {
+                    "cell_value": ""
+                },
+                {
+                    "cell_value": "SQuAD 1.1 EM/F1"
+                },
+                {
+                    "cell_value": "SQuAD 2.0 EM/F1"
+                },
+                {
+                    "cell_value": "MNLI m/mm"
+                },
+                {
+                    "cell_value": "SST Acc"
+                },
+                {
+                    "cell_value": "QQP Acc"
+                },
+                {
+                    "cell_value": "QNLI Acc"
+                },
+                {
+                    "cell_value": "STS-B Acc"
+                },
+                {
+                    "cell_value": "RTE Acc"
+                },
+                {
+                    "cell_value": "MRPC Acc"
+                },
+                {
+                    "cell_value": "CoLA Mcc"
+                }
+            ],
+            "type": "table_header"
+        },
+        {
+            "block_idx": 113,
+            "cells": [
+                {
+                    "cell_value": "BERT"
+                },
+                {
+                    "cell_value": "84.1/90.9"
+                },
+                {
+                    "cell_value": "79.0/81.8"
+                },
+                {
+                    "cell_value": "86.6/-"
+                },
+                {
+                    "cell_value": "93.2"
+                },
+                {
+                    "cell_value": "91.3"
+                },
+                {
+                    "cell_value": "92.3"
+                },
+                {
+                    "cell_value": "90.0"
+                },
+                {
+                    "cell_value": "70.4"
+                },
+                {
+                    "cell_value": "88.0"
+                },
+                {
+                    "cell_value": "60.6"
+                }
+            ],
+            "type": "table_data_row"
+        },
+        {
+            "block_idx": 114,
+            "cells": [
+                {
+                    "cell_value": "UniLM"
+                },
+                {
+                    "cell_value": "-/-"
+                },
+                {
+                    "cell_value": "80.5/83.4"
+                },
+                {
+                    "cell_value": "87.0/85.9"
+                },
+                {
+                    "cell_value": "94.5"
+                },
+                {
+                    "cell_value": "-"
+                },
+                {
+                    "cell_value": "92.7"
+                },
+                {
+                    "cell_value": "-"
+                },
+                {
+                    "cell_value": "70.9"
+                },
+                {
+                    "cell_value": "-"
+                },
+                {
+                    "cell_value": "61.1"
+                }
+            ],
+            "type": "table_data_row"
+        },
+        {
+            "block_idx": 115,
+            "cells": [
+                {
+                    "cell_value": "XLNet"
+                },
+                {
+                    "cell_value": "89.0/94.5"
+                },
+                {
+                    "cell_value": "86.1/88.8"
+                },
+                {
+                    "cell_value": "89.8/-"
+                },
+                {
+                    "cell_value": "95.6"
+                },
+                {
+                    "cell_value": "91.8"
+                },
+                {
+                    "cell_value": "93.9"
+                },
+                {
+                    "cell_value": "91.8"
+                },
+                {
+                    "cell_value": "83.8"
+                },
+                {
+                    "cell_value": "89.2"
+                },
+                {
+                    "cell_value": "63.6"
+                }
+            ],
+            "type": "table_data_row"
+        },
+        {
+            "block_idx": 116,
+            "cells": [
+                {
+                    "cell_value": "RoBERTa"
+                },
+                {
+                    "cell_value": "88.9/94.6"
+                },
+                {
+                    "cell_value": "86.5/89.4"
+                },
+                {
+                    "cell_value": "90.2/90.2"
+                },
+                {
+                    "cell_value": "96.4"
+                },
+                {
+                    "cell_value": "92.2"
+                },
+                {
+                    "cell_value": "94.7"
+                },
+                {
+                    "cell_value": "92.4"
+                },
+                {
+                    "cell_value": "86.6"
+                },
+                {
+                    "cell_value": "90.9"
+                },
+                {
+                    "cell_value": "68.0"
+                }
+            ],
+            "type": "table_data_row"
+        },
+        {
+            "block_idx": 117,
+            "cells": [
+                {
+                    "cell_value": "BART"
+                },
+                {
+                    "cell_value": "88.8/94.6"
+                },
+                {
+                    "cell_value": "86.1/89.2"
+                },
+                {
+                    "cell_value": "89.9/90.1"
+                },
+                {
+                    "cell_value": "96.6"
+                },
+                {
+                    "cell_value": "92.5"
+                },
+                {
+                    "cell_value": "94.9"
+                },
+                {
+                    "cell_value": "91.2"
+                },
+                {
+                    "cell_value": "87.0"
+                },
+                {
+                    "cell_value": "90.4"
+                },
+                {
+                    "cell_value": "62.8"
+                }
+            ],
+            "type": "table_data_row"
+        }
+    ],
+    "tag": "table",
+    "top": 64.8
+}]
