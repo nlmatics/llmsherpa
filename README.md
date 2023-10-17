@@ -213,3 +213,10 @@ Here's the response we get:
 The BART performance score on SQuAD is 88.8 for EM and 94.6 for F1.
 ```
 
+### Get the Raw JSON
+
+To get the complete json returned by llmsherpa service and process it differently, simply get the json attribute
+
+```python
+doc.json
+```

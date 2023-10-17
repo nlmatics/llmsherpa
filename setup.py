@@ -2,8 +2,10 @@ from setuptools import setup, find_packages
 
 setup(
     name='llmsherpa',
-    version='0.1.0',    
+    version='0.1.1',    
     description='Strategic APIs to Accelerate LLM Use Cases',
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
     url='https://github.com/nlmatics/llmsherpa',
     author='Ambika Sukla',
     author_email='ambika.sukla@nlmatics.com',

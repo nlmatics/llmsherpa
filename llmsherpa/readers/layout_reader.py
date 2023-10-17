@@ -319,7 +319,7 @@ class Document:
     def __init__(self, blocks_json):
         self.reader = LayoutReader()
         self.root_node = self.reader.read(blocks_json)
-        self.blocks_json = blocks_json
+        self.json = blocks_json
     def chunks(self):
         return self.root_node.chunks()
     def tables(self):
