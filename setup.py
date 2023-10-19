@@ -11,7 +11,9 @@ setup(
     author_email='ambika.sukla@nlmatics.com',
     license='MIT',
     packages=find_packages(),
-    install_requires=[],
+    install_requires=[
+        "urllib3"
+    ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Development Status :: 1 - Planning',
