@@ -26,6 +26,10 @@ With LayoutPDFReader, developers can find optimal chunks of text to vectorize, a
 
 You can experiment with the library directly in Google Colab [here](https://colab.research.google.com/drive/1hx5Y2TxWriAuFXcwcjsu3huKyn39Q2id?usp=sharing)
 
+Here's a [writeup](https://open.substack.com/pub/ambikasukla/p/efficient-rag-with-document-layout?r=ft8uc&utm_campaign=post&utm_medium=web) explaining the problem and our approach. 
+
+Here'a another [blog](https://medium.com/@kirankurup/mastering-pdfs-extracting-sections-headings-paragraphs-and-tables-with-cutting-edge-parser-faea18870125) explaining the solution. 
+
 ### Installation
 
 ```bash
