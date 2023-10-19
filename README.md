@@ -24,6 +24,8 @@ With LayoutPDFReader, developers can find optimal chunks of text to vectorize, a
 
 *For private hosting options, OCR support and help with specific issues with your PDFs contact contact@nlmatics.com.*
 
+You can experiment with the library directly in Google Colab [here](https://colab.research.google.com/drive/1hx5Y2TxWriAuFXcwcjsu3huKyn39Q2id?usp=sharing)
+
 ### Installation
 
 ```bash
@@ -52,6 +54,12 @@ In the following examples, we will use [LlamaIndex](https://www.llamaindex.ai/) 
 pip install llama-index
 ```
 
+### Setup OpenAI
+
+```python
+import openai
+openai.api_key = #<Insert API Key>
+```
 ### Summarize a Section using prompts
 
 LayoutPDFReader offers powerful ways to pick sections and subsections from a large document and use LLMs to extract insights from a section.
