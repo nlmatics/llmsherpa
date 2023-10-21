@@ -59,6 +59,16 @@ class TestLayoutReader(unittest.TestCase):
         self.assertEqual(len(doc.children[0].children[0].children),  2)
         self.assertEqual(len(doc.children[1].children[0].children[1].children),  2)
         self.assertEqual(doc.children[1].children[0].children[1].parent_text(), "Article II > Section 1")
+
+    def test_ooo_nested_headers(self):
+        # OutOfOrder Header test case
+        doc = self.read_layout("ooo_header_test.json")
+        self.assertEqual(len(doc.children[0].children),  0)
+        self.assertEqual(len(doc.children[1].children),  0)
+        self.assertEqual(len(doc.children[2].children),  2)
+        self.assertEqual(len(doc.children[2].children[0].children),  2)
+        self.assertEqual(len(doc.children[3].children[0].children[1].children),  2)
+        self.assertEqual(doc.children[3].children[0].children[1].parent_text(), "Article II > Section 1")
     
     def test_table(self):
         doc = self.read_layout("table_test.json")
