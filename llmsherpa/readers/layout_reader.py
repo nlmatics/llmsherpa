@@ -6,13 +6,17 @@ class Block:
         self.sentences = block_json['sentences'] if block_json and 'sentences' in block_json else []
         self.children = []
         self.parent = None
+
     def add_child(self, node):
         self.children.append(node)
         node.parent = self
+
     def to_html(self, include_children=False, recurse=False):
         pass
+
     def to_text(self, include_children=False, recurse=False):
         pass
+
     def parent_chain(self):
         chain = []
         parent = self.parent
@@ -306,7 +310,7 @@ class LayoutReader:
                     parent_stack.append(node)
                     parent.add_child(node)
                 else:
-                    while len(parent_stack) > 0 and parent_stack.pop().level > node.level:
+                    while len(parent_stack) > 1 and parent_stack.pop().level > node.level:
                         pass
                     parent_stack[-1].add_child(node)            
                     parent_stack.append(node)
