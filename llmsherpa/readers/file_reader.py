@@ -27,16 +27,21 @@ class LayoutPDFReader:
         parser_response = self.api_connection.request("POST", self.parser_api_url, fields={'file': pdf_file})
         return parser_response
 
-    def read_pdf(self, path_or_url):
-        is_url = urlparse(path_or_url).scheme != ""
-        if is_url:
-            pdf_file = self._download_pdf(path_or_url)
+    def read_pdf(self, path_or_url, contents=None):
+        # file contents were given
+        if contents is not None:
+            pdf_file = (path_or_url, contents, 'application/pdf')
         else:
-            file_name = os.path.basename(path_or_url)
-            with open(path_or_url, "rb") as f:
-                file_data = f.read()
-                pdf_file = (file_name, file_data, 'application/pdf')
+            is_url = urlparse(path_or_url).scheme != ""
+            if is_url:
+                pdf_file = self._download_pdf(path_or_url)
+            else:
+                file_name = os.path.basename(path_or_url)
+                with open(path_or_url, "rb") as f:
+                    file_data = f.read()
+                    pdf_file = (file_name, file_data, 'application/pdf')
         parser_response = self._parse_pdf(pdf_file)
+        print('parser response:', parser_response)
         response_json = json.loads(parser_response.data.decode("utf-8"))
         blocks = response_json['return_dict']['result']['blocks']
         return Document(blocks)
