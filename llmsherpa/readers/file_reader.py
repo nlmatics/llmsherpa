@@ -5,12 +5,30 @@ from urllib.parse import urlparse
 from llmsherpa.readers import Document
 
 class LayoutPDFReader:
+    """
+    Reads PDF content and understands hierarchical layout of the document sections and structural components such as paragraphs, sentences, tables, lists, sublists
+
+    Parameters
+    ----------
+    parser_api_url: str
+        API url for LLM Sherpa. Use customer url for your private instance here            
+    
+    """
     def __init__(self, parser_api_url):
+        """
+            Constructs a LayoutPDFReader from a parser endpoint.
+
+            Parameters
+            ----------
+            parser_api_url: str
+                API url for LLM Sherpa. Use customer url for your private instance here            
+        """
         self.parser_api_url = parser_api_url
         self.download_connection = urllib3.PoolManager()
         self.api_connection = urllib3.PoolManager()
 
     def _download_pdf(self, pdf_url):
+        
         # some servers only allow browers user_agent to download
         user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
         # add authorization headers if using external API (see upload_pdf for an example)
@@ -28,6 +46,16 @@ class LayoutPDFReader:
         return parser_response
 
     def read_pdf(self, path_or_url, contents=None):
+        """
+        Reads pdf from a url or path
+
+        Parameters
+        ----------
+        path_or_url: str
+            path or url to the pdf file e.g. https://someexapmple.com/myfile.pdf or /home/user/myfile.pdf
+        contents: bytes
+            contents of the pdf file. If contents is given, path_or_url is ignored. This is useful when you already have the pdf file contents in memory such as if you are using streamlit or flask.
+        """
         # file contents were given
         if contents is not None:
             pdf_file = (path_or_url, contents, 'application/pdf')
@@ -44,17 +72,3 @@ class LayoutPDFReader:
         response_json = json.loads(parser_response.data.decode("utf-8"))
         blocks = response_json['return_dict']['result']['blocks']
         return Document(blocks)
-    # def read_file(file_path):
-
-def main(): 
-    llmsherpa_api_url = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
-    pdf_url = "https://arxiv.org/pdf/1910.13461.pdf"
-    pdf_url = "/Users/ambikasukla/Documents/1910.13461.pdf"
-    pdf_reader = LayoutPDFReader(llmsherpa_api_url)
-    doc = pdf_reader.read_pdf(pdf_url)
-    print(doc.sections()[5].to_html(include_children=True, recurse=True))
-    
-# Using the special variable  
-# __name__ 
-if __name__=="__main__": 
-    main()
