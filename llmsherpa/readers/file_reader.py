@@ -40,17 +40,3 @@ class LayoutPDFReader:
         response_json = json.loads(parser_response.data.decode("utf-8"))
         blocks = response_json['return_dict']['result']['blocks']
         return Document(blocks)
-    # def read_file(file_path):
-
-def main(): 
-    llmsherpa_api_url = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
-    pdf_url = "https://arxiv.org/pdf/1910.13461.pdf"
-    pdf_url = "/Users/ambikasukla/Documents/1910.13461.pdf"
-    pdf_reader = LayoutPDFReader(llmsherpa_api_url)
-    doc = pdf_reader.read_pdf(pdf_url)
-    print(doc.sections()[5].to_html(include_children=True, recurse=True))
-    
-# Using the special variable  
-# __name__ 
-if __name__=="__main__": 
-    main()
