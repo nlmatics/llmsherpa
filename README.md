@@ -28,7 +28,7 @@ You can experiment with the library directly in Google Colab [here](https://cola
 
 Here's a [writeup](https://open.substack.com/pub/ambikasukla/p/efficient-rag-with-document-layout?r=ft8uc&utm_campaign=post&utm_medium=web) explaining the problem and our approach. 
 
-Here'a another [blog](https://medium.com/@kirankurup/mastering-pdfs-extracting-sections-headings-paragraphs-and-tables-with-cutting-edge-parser-faea18870125) explaining the solution. 
+Here'a LlamaIndex [blog](https://medium.com/@kirankurup/mastering-pdfs-extracting-sections-headings-paragraphs-and-tables-with-cutting-edge-parser-faea18870125) explaining the need for smart chunking. 
 
 ### Installation
 
@@ -64,6 +64,53 @@ pip install llama-index
 import openai
 openai.api_key = #<Insert API Key>
 ```
+
+### Vector search and Retrieval Augmented Generation with Smart Chunking
+
+LayoutPDFReader does smart chunking keeping related text due to document structure together:
+
+* All list items are together including the paragraph that precedes the list.
+* Items in a table are chuncked together
+* Contextual information from section headers and nested section headers is included
+
+The following code creates a LlamaIndex query engine from LayoutPDFReader document chunks
+
+```python
+from llama_index.readers.schema.base import Document
+from llama_index import VectorStoreIndex
+
+index = VectorStoreIndex([])
+for chunk in doc.chunks():
+    index.insert(Document(text=chunk.to_context_text(), extra_info={}))
+query_engine = index.as_query_engine()
+```
+
+Let's run one query:
+
+```python
+response = query_engine.query("list all the tasks that work with bart")
+print(response)
+```
+
+We get the following response:
+
+```
+BART works well for text generation, comprehension tasks, abstractive dialogue, question answering, and summarization tasks.
+```
+
+Let's try another query that needs answer from a table:
+
+```python
+response = query_engine.query("what is the bart performance score on squad")
+print(response)
+```
+
+Here's the response we get:
+
+```
+The BART performance score on SQuAD is 88.8 for EM and 94.6 for F1.
+```
+
 ### Summarize a Section using prompts
 
 LayoutPDFReader offers powerful ways to pick sections and subsections from a large document and use LLMs to extract insights from a section.
@@ -179,51 +226,6 @@ R1 of BART for different datasets:
 - For the XSum dataset, the R1 score of BART is 45.14.
 ```
 
-### Vector search and Retrieval Augmented Generation with Smart Chunking
-
-LayoutPDFReader does smart chunking keeping the integrity of related text together:
-
-* All list items are together including the paragraph that precedes the list.
-* Items in a table are chuncked together
-* Contextual information from section headers and nested section headers is included
-
-The following code creates a LlamaIndex query engine from LayoutPDFReader document chunks
-
-```python
-from llama_index.readers.schema.base import Document
-from llama_index import VectorStoreIndex
-
-index = VectorStoreIndex([])
-for chunk in doc.chunks():
-    index.insert(Document(text=chunk.to_context_text(), extra_info={}))
-query_engine = index.as_query_engine()
-```
-
-Let's run one query:
-
-```python
-response = query_engine.query("list all the tasks that work with bart")
-print(response)
-```
-
-We get the following response:
-
-```
-BART works well for text generation, comprehension tasks, abstractive dialogue, question answering, and summarization tasks.
-```
-
-Let's try another query that needs answer from a table:
-
-```python
-response = query_engine.query("what is the bart performance score on squad")
-print(response)
-```
-
-Here's the response we get:
-
-```
-The BART performance score on SQuAD is 88.8 for EM and 94.6 for F1.
-```
 
 ### Get the Raw JSON
 

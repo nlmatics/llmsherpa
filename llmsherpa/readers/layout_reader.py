@@ -1,4 +1,21 @@
 class Block:
+    """
+    A block is a node in the layout tree. It can be a paragraph, a list item, a table, or a section header. 
+    This is the base class for all blocks such as Paragraph, ListItem, Table, Section.
+
+    Attributes
+    ----------
+    tag: str
+        tag of the block e.g. para, list_item, table, header
+    level: int
+        level of the block in the layout tree
+    sentences: list
+        list of sentences in the block
+    children: list
+        list of immediate child blocks, but not the children of the children
+    parent: Block
+        parent of the block
+    """
     tag: str
     def __init__(self, block_json=None):
         self.tag = block_json['tag'] if block_json and 'tag' in block_json else None
@@ -8,16 +25,28 @@ class Block:
         self.parent = None
 
     def add_child(self, node):
+        """
+        Adds a child to the block. Sets the parent of the child to self.
+        """
         self.children.append(node)
         node.parent = self
 
     def to_html(self, include_children=False, recurse=False):
+        """
+        Converts the block to html. This is a virtual method and should be implemented by the derived classes.
+        """
         pass
 
     def to_text(self, include_children=False, recurse=False):
+        """
+        Converts the block to text. This is a virtual method and should be implemented by the derived classes.
+        """
         pass
 
     def parent_chain(self):
+        """
+        Returns the parent chain of the block consisting of all the parents of the block until the root.
+        """
         chain = []
         parent = self.parent
         while parent:
@@ -27,6 +56,9 @@ class Block:
         return chain
 
     def parent_text(self):
+        """
+        Returns the text of the parent chain of the block. This is useful for adding section information to the text.
+        """
         parent_chain = self.parent_chain()
         header_texts = []
         para_texts = []
@@ -41,6 +73,9 @@ class Block:
         return text                
 
     def to_context_text(self, include_section_info=True):
+        """
+        Returns the text of the block with section information. This provides context to the text.
+        """
         text = ""
         if include_section_info:
             text += self.parent_text() + "\n"
@@ -51,6 +86,9 @@ class Block:
         return text
     
     def iter_children(self, node, level, node_visitor):
+        """
+        Iterates over all the children of the node and calls the node_visitor function on each child.
+        """
         for child in node.children:
             node_visitor(child)
             # print("-"*level, child.tag, f"({len(child.children)})", child.to_text())
@@ -58,6 +96,9 @@ class Block:
                 self.iter_children(child, level + 1, node_visitor)
 
     def paragraphs(self):
+        """
+        Returns all the paragraphs in the block. This is useful for getting all the paragraphs in a section.
+        """
         paragraphs = []
         def para_collector(node):
             if node.tag == 'para':
@@ -66,6 +107,9 @@ class Block:
         return paragraphs
        
     def chunks(self):
+        """
+        Returns all the chunks in the block. Chunking automatically splits the document into paragraphs, lists, and tables without any prior knowledge of the document structure.
+        """
         chunks = []
         def chunk_collector(node):
             if node.tag in ['para', 'list_item', 'table']:
@@ -74,14 +118,20 @@ class Block:
         return chunks
     
     def tables(self):
+        """
+        Returns all the tables in the block. This is useful for getting all the tables in a section.
+        """
         tables = []
         def chunk_collector(node):
             if node.tag in ['table']:
                 tables.append(node)
-        self.iter_children(self, 0, chunk_collector)
+        self.iter_children(self, 0, chunk_collector)        
         return tables
 
     def sections(self):
+        """
+        Returns all the sections in the block. This is useful for getting all the sections in a document.
+        """
         sections = []
         def chunk_collector(node):
             if node.tag in ['header']:
@@ -90,15 +140,38 @@ class Block:
         return sections
 
 class Paragraph(Block):
+    """
+    A paragraph is a block of text. It can have children such as lists. A paragraph has tag 'para'.
+    """
     def __init__(self, para_json):
         super().__init__(para_json)
     def to_text(self, include_children=False, recurse=False):
+        """
+        Converts the paragraph to text. If include_children is True, then the text of the children is also included. If recurse is True, then the text of the children's children are also included.
+        
+        Parameters
+        ----------
+        include_children: bool
+            If True, then the text of the children are also included
+        recurse: bool
+            If True, then the text of the children's children are also included
+        """
         para_text = "\n".join(self.sentences)
         if include_children:
             for child in self.children:
                 para_text += "\n" + child.to_text(include_children=recurse, recurse=recurse)
         return para_text    
     def to_html(self, include_children=False, recurse=False):
+        """
+        Converts the paragraph to html. If include_children is True, then the html of the children is also included. If recurse is True, then the html of the children's children are also included.
+
+        Parameters
+        ----------
+        include_children: bool
+            If True, then the html of the children are also included
+        recurse: bool
+            If True, then the html of the children's children are also included
+        """
         html_str = "<p>"
         html_str = html_str + "\n".join(self.sentences)
         if include_children:
@@ -111,10 +184,28 @@ class Paragraph(Block):
         return html_str
     
 class Section(Block):
+    """
+    A section is a block of text. It can have children such as paragraphs, lists, and tables. A section has tag 'header'.
+
+    Attributes
+    ----------
+    title: str
+        title of the section
+    """
     def __init__(self, section_json):
         super().__init__(section_json)
         self.title = "\n".join(self.sentences)
     def to_text(self, include_children=False, recurse=False):
+        """
+        Converts the section to text. If include_children is True, then the text of the children is also included. If recurse is True, then the text of the children's children are also included.
+
+        Parameters
+        ----------
+        include_children: bool
+            If True, then the text of the children are also included
+        recurse: bool
+            If True, then the text of the children's children are also included
+        """
         text = self.title
         if include_children:
             for child in self.children:
@@ -122,6 +213,16 @@ class Section(Block):
         return text    
 
     def to_html(self, include_children=False, recurse=False):
+        """
+        Converts the section to html. If include_children is True, then the html of the children is also included. If recurse is True, then the html of the children's children are also included.
+
+        Parameters
+        ----------
+        include_children: bool
+            If True, then the html of the children are also included
+        recurse: bool
+            If True, then the html of the children's children are also included
+        """
         html_str = f"<h{self.level + 1}>"
         html_str = html_str + self.title
         html_str = html_str + f"</h{self.level + 1}>"
@@ -131,10 +232,23 @@ class Section(Block):
         return html_str
 
 class ListItem(Block):
+    """
+    A list item is a block of text. It can have child list items. A list item has tag 'list_item'.
+    """
     def __init__(self, list_json):
         super().__init__(list_json)
 
     def to_text(self, include_children=False, recurse=False):
+        """
+        Converts the list item to text. If include_children is True, then the text of the children is also included. If recurse is True, then the text of the children's children are also included.
+        
+        Parameters
+        ----------
+        include_children: bool
+            If True, then the text of the children are also included
+        recurse: bool
+            If True, then the text of the children's children are also included
+        """
         text = "\n".join(self.sentences)
         if include_children:
             for child in self.children:
@@ -142,6 +256,16 @@ class ListItem(Block):
         return text    
 
     def to_html(self, include_children=False, recurse=False):
+        """
+        Converts the list item to html. If include_children is True, then the html of the children is also included. If recurse is True, then the html of the children's children are also included.
+        
+        Parameters
+        ----------
+        include_children: bool
+            If True, then the html of the children are also included
+        recurse: bool
+            If True, then the html of the children's children are also included
+        """
         html_str = f"<li>"
         html_str = html_str + "\n".join(self.sentences)
         if include_children:
@@ -153,11 +277,12 @@ class ListItem(Block):
         html_str = html_str + f"</li>"
         return html_str
 
-class List(Block):
-    def __init__(self, list_json):
-        self.x = 0
     
 class TableCell(Block):
+    """
+    A table cell is a block of text. It can have child paragraphs. A table cell has tag 'table_cell'.
+    A table cell is contained within table rows.
+    """
     def __init__(self, cell_json):
         super().__init__(cell_json)
         self.col_span = cell_json['col_span'] if 'col_span' in cell_json else 1
@@ -167,11 +292,17 @@ class TableCell(Block):
         else:
             self.cell_node = None
     def to_text(self):
+        """
+        Returns the cell value of the text. If the cell value is a paragraph node, then the text of the node is returned.
+        """
         cell_text = self.cell_value
         if self.cell_node:
             cell_text = self.cell_node.to_text()
         return cell_text
     def to_html(self):
+        """
+        Returns the cell value ashtml. If the cell value is a paragraph node, then the html of the node is returned.
+        """
         cell_html = self.cell_value
         if self.cell_node:
             cell_html = self.cell_node.to_html()
@@ -182,6 +313,9 @@ class TableCell(Block):
         return html_str
             
 class TableRow(Block):
+    """
+    A table row is a block of text. It can have child table cells.
+    """
     def __init__(self, row_json):
         self.cells = []
         if row_json['type'] == 'full_row':
@@ -192,11 +326,17 @@ class TableRow(Block):
                 cell = TableCell(cell_json)
                 self.cells.append(cell)
     def to_text(self, include_children=False, recurse=False):
+        """
+        Returns text of a row with text from all the cells in the row delimited by '|'
+        """
         cell_text = ""
         for cell in self.cells:
             cell_text = cell_text + " | " + cell.to_text()
         return cell_text
     def to_html(self, include_children=False, recurse=False):
+        """
+        Returns html for a <tr> with html from all the cells in the row as <td>
+        """
         html_str = "<tr>"
         for cell in self.cells:
             html_str = html_str + cell.to_html()
@@ -204,6 +344,9 @@ class TableRow(Block):
         return html_str
 
 class TableHeader(Block):
+    """
+    A table header is a block of text. It can have child table cells.
+    """
     def __init__(self, row_json):
         super().__init__(row_json)
         self.cells = []
@@ -211,6 +354,10 @@ class TableHeader(Block):
             cell = TableCell(cell_json)
             self.cells.append(cell)
     def to_text(self, include_children=False, recurse=False):
+        """
+        Returns text of a row with text from all the cells in the row delimited by '|' and the header row is delimited by '---'
+        Text is returned in markdown format.
+        """
         cell_text = ""
         for cell in self.cells:
             cell_text = cell_text + " | " + cell.to_text()
@@ -219,13 +366,19 @@ class TableHeader(Block):
             cell_text = cell_text + " | " + "---"           
         return cell_text
     def to_html(self, include_children=False, recurse=False):
-            html_str = "<th>"
-            for cell in self.cells:
-                html_str = html_str + cell.to_html()
-            html_str = html_str + "</th>"
-            return html_str
+        """
+        Returns html for a <th> with html from all the cells in the row as <td>
+        """
+        html_str = "<th>"
+        for cell in self.cells:
+            html_str = html_str + cell.to_html()
+        html_str = html_str + "</th>"
+        return html_str
         
 class Table(Block):
+    """
+    A table is a block of text. It can have child table rows. A table has tag 'table'.
+    """
     def __init__(self, table_json, parent):
         # self.title = parent.name
         super().__init__(table_json)
@@ -241,6 +394,9 @@ class Table(Block):
                     row = TableRow(row_json)
                     self.rows.append(row)
     def to_text(self, include_children=False, recurse=False):
+        """
+        Returns text of a table with text from all the rows in the table delimited by '\n'
+        """
         text = ""
         for header in self.headers:
             text = text + header.to_text() + "\n"
@@ -249,6 +405,9 @@ class Table(Block):
         return text
                    
     def to_html(self, include_children=False, recurse=False):
+        """
+        Returns html for a <table> with html from all the rows in the table as <tr>
+        """
         html_str = "<table>"
         for header in self.headers:
             html_str = html_str + header.to_html()
@@ -258,6 +417,9 @@ class Table(Block):
         return html_str
 
 class LayoutReader:
+    """
+    Reads the layout tree from the json returned by the parser API.
+    """
     def debug(self, pdf_root):
         def iter_children(node, level):
             for child in node.children:
@@ -266,12 +428,11 @@ class LayoutReader:
         iter_children(pdf_root, 0)
 
     def read(self, blocks_json):
+        """
+        Reads the layout tree from the json returned by the parser API. Constructs a tree of Block objects.
+        """
         root = Block()
         parent = None
-        # table_node = None
-        table_nodes = []
-        sections = []
-        # prev_list = None
         parent_stack = [root]
         prev_node = root
         parent = root
@@ -320,13 +481,25 @@ class LayoutReader:
         return root
 
 class Document:
+    """
+    A document is a tree of blocks. It is the root node of the layout tree.
+    """
     def __init__(self, blocks_json):
         self.reader = LayoutReader()
         self.root_node = self.reader.read(blocks_json)
         self.json = blocks_json
     def chunks(self):
+        """
+        Returns all the chunks in the document. Chunking automatically splits the document into paragraphs, lists, and tables without any prior knowledge of the document structure.
+        """
         return self.root_node.chunks()
     def tables(self):
+        """
+        Returns all the tables in the document. This is useful for getting all the tables in a document.
+        """
         return self.root_node.tables()
     def sections(self):
+        """
+        Returns all the sections in the document. This is useful for getting all the sections in a document.
+        """
         return self.root_node.sections()

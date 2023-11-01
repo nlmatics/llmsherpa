@@ -5,12 +5,30 @@ from urllib.parse import urlparse
 from llmsherpa.readers import Document
 
 class LayoutPDFReader:
+    """
+    Reads PDF content and understands hierarchical layout of the document sections and structural components such as paragraphs, sentences, tables, lists, sublists
+
+    Parameters
+    ----------
+    parser_api_url: str
+        API url for LLM Sherpa. Use customer url for your private instance here            
+    
+    """
     def __init__(self, parser_api_url):
+        """
+            Constructs a LayoutPDFReader from a parser endpoint.
+
+            Parameters
+            ----------
+            parser_api_url: str
+                API url for LLM Sherpa. Use customer url for your private instance here            
+        """
         self.parser_api_url = parser_api_url
         self.download_connection = urllib3.PoolManager()
         self.api_connection = urllib3.PoolManager()
 
     def _download_pdf(self, pdf_url):
+        
         # some servers only allow browers user_agent to download
         user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
         # add authorization headers if using external API (see upload_pdf for an example)
@@ -28,6 +46,14 @@ class LayoutPDFReader:
         return parser_response
 
     def read_pdf(self, path_or_url, contents=None):
+        """
+        Reads pdf from a url or path
+
+        Parameters
+        ----------
+        path_or_url: str
+            path or url to the pdf file e.g. https://someexapmple.com/myfile.pdf or /home/user/myfile.pdf
+        """
         # file contents were given
         if contents is not None:
             pdf_file = (path_or_url, contents, 'application/pdf')
