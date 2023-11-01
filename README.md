@@ -30,6 +30,8 @@ Here's a [writeup](https://open.substack.com/pub/ambikasukla/p/efficient-rag-wit
 
 Here'a LlamaIndex [blog](https://medium.com/@kirankurup/mastering-pdfs-extracting-sections-headings-paragraphs-and-tables-with-cutting-edge-parser-faea18870125) explaining the need for smart chunking. 
 
+API Reference: [https://llmsherpa.readthedocs.io/](https://llmsherpa.readthedocs.io/)
+
 ### Installation
 
 ```bash
