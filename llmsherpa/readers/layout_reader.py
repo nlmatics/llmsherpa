@@ -9,20 +9,35 @@ class Block:
         tag of the block e.g. para, list_item, table, header
     level: int
         level of the block in the layout tree
+    page_idx: int
+        page index of the block in the document. It starts from 0 and is -1 if the page number is not available
+    block_idx: int
+        id of the block as returned from the server. It starts from 0 and is -1 if the id is not available
+    top: float
+        top position of the block in the page and it is -1 if the position is not available
+    left: float
+        left position of the block in the page and it is -1 if the position is not available
     sentences: list
         list of sentences in the block
     children: list
         list of immediate child blocks, but not the children of the children
     parent: Block
         parent of the block
+    block_json: dict
+        json returned by the parser API for the block
     """
     tag: str
     def __init__(self, block_json=None):
         self.tag = block_json['tag'] if block_json and 'tag' in block_json else None
         self.level = block_json['level'] if block_json and 'level' in block_json else -1
+        self.page_idx = block_json['page_idx'] if block_json and 'page_idx' in block_json else -1
+        self.block_idx = block_json['block_idx'] if block_json and 'block_idx' in block_json else -1
+        self.top = block_json['top'] if block_json and 'top' in block_json else -1
+        self.left = block_json['left'] if block_json and 'left' in block_json else -1
         self.sentences = block_json['sentences'] if block_json and 'sentences' in block_json else []
         self.children = []
         self.parent = None
+        self.block_json = block_json
 
     def add_child(self, node):
         """

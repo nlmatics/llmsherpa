@@ -119,6 +119,14 @@ class TestLayoutReader(unittest.TestCase):
         correct_text = self.clean_text(correct_text)
         self.assertEqual(chunks[3].to_context_text(), correct_text)
 
+    def test_meta_data(self):
+        doc = self.read_layout("table_test.json")
+        chunks = doc.chunks()
+        
+        self.assertEqual(chunks[0].page_idx, 5)
+        self.assertEqual(chunks[0].block_idx, 112)
+        self.assertEqual(chunks[0].top, 64.8)
+        self.assertEqual(chunks[0].left, 130.05)
 
 if __name__ == '__main__':
     unittest.main()

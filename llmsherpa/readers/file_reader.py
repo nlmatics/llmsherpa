@@ -53,6 +53,8 @@ class LayoutPDFReader:
         ----------
         path_or_url: str
             path or url to the pdf file e.g. https://someexapmple.com/myfile.pdf or /home/user/myfile.pdf
+        contents: bytes
+            contents of the pdf file. If contents is given, path_or_url is ignored. This is useful when you already have the pdf file contents in memory such as if you are using streamlit or flask.
         """
         # file contents were given
         if contents is not None:
