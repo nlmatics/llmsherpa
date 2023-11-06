@@ -13,16 +13,11 @@ LayoutPDFReader solves this problem by parsing PDFs along with hierarchical layo
 3. Links between sections and paragraphs.
 4. Tables along with the section the tables are found in.
 5. Lists and nested lists.
+6. Join content spread across pages.
+7. Removal of repeating headers and footers.
+8. Watermark removal.
 
 With LayoutPDFReader, developers can find optimal chunks of text to vectorize, and a solution for limited context window sizes of LLMs. 
-
-### Important Notes
-
-* LLMSherpa uses a free and open api server. The server does not store your PDFs except for temporary storage during parsing. 
-* The LayoutPDFReader is tested on a wide variety of PDFs. That being said, it is still challenging to get every PDF parsed correctly.
-* OCR is currently not supported. Only PDFs with a text layer are supported.
-
-*For private hosting options, OCR support and help with specific issues with your PDFs contact contact@nlmatics.com.*
 
 You can experiment with the library directly in Google Colab [here](https://colab.research.google.com/drive/1hx5Y2TxWriAuFXcwcjsu3huKyn39Q2id?usp=sharing)
 
@@ -31,6 +26,21 @@ Here's a [writeup](https://open.substack.com/pub/ambikasukla/p/efficient-rag-wit
 Here'a LlamaIndex [blog](https://medium.com/@kirankurup/mastering-pdfs-extracting-sections-headings-paragraphs-and-tables-with-cutting-edge-parser-faea18870125) explaining the need for smart chunking. 
 
 API Reference: [https://llmsherpa.readthedocs.io/](https://llmsherpa.readthedocs.io/)
+
+### Important Notes
+
+ * The LayoutPDFReader is tested on a wide variety of PDFs. That being said, it is still challenging to get every PDF parsed correctly.
+* OCR is currently not supported. Only PDFs with a text layer are supported.
+
+> [!NOTE]
+> LLMSherpa uses a free and open api server. The server does not store your PDFs except for temporary storage during parsing.
+
+> [!IMPORTANT]
+> Private hosting is now available via [Microsoft Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/nlmaticscorp1686371242615.layout_pdf_parser?tab=Overview)!
+
+
+*For on premise hosting options, premium support or custom license options, create a custom licensing ticket [here](https://nlmatics.atlassian.net/servicedesk/customer/portals).*
+
 
 ### Installation
 
