@@ -42,7 +42,7 @@ class LayoutPDFReader:
 
     def _parse_pdf(self, pdf_file):
         auth_header = {}
-        parser_response = self.api_connection.request("POST", self.parser_api_url, fields={'file': pdf_file})
+        parser_response = self.api_connection.request("POST", self.parser_api_url, fields=json.dumps({'file': pdf_file}))
         return parser_response
 
     def read_pdf(self, path_or_url, contents=None):
