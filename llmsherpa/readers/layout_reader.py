@@ -14,9 +14,11 @@ class Block:
     block_idx: int
         id of the block as returned from the server. It starts from 0 and is -1 if the id is not available
     top: float
-        top position of the block in the page and it is -1 if the position is not available
+        top position of the block in the page and it is -1 if the position is not available - only available for tables
     left: float
-        left position of the block in the page and it is -1 if the position is not available
+        left position of the block in the page and it is -1 if the position is not available - only available for tables
+    bbox: [float]
+        bounding box of the block in the page and it is [] if the bounding box is not available
     sentences: list
         list of sentences in the block
     children: list
@@ -34,6 +36,7 @@ class Block:
         self.block_idx = block_json['block_idx'] if block_json and 'block_idx' in block_json else -1
         self.top = block_json['top'] if block_json and 'top' in block_json else -1
         self.left = block_json['left'] if block_json and 'left' in block_json else -1
+        self.bbox = block_json['bbox'] if block_json and 'bbox' in block_json else []
         self.sentences = block_json['sentences'] if block_json and 'sentences' in block_json else []
         self.children = []
         self.parent = None
@@ -518,3 +521,21 @@ class Document:
         Returns all the sections in the document. This is useful for getting all the sections in a document.
         """
         return self.root_node.sections()
+    def to_text(self):
+        """
+        Returns text of a document by iterating through all the sections '\n'
+        """
+        text = ""
+        for section in self.sections():
+            text = text + section.to_text(include_children=True, recurse=True) + "\n"
+        return text
+                   
+    def to_html(self):
+        """
+        Returns html for the document by iterating through all the sections
+        """
+        html_str = "<html>"
+        for section in self.sections():
+            html_str = html_str + section.to_html(include_children=True, recurse=True)
+        html_str = html_str + "</html>"
+        return html_str

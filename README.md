@@ -2,6 +2,17 @@
 
 LLM Sherpa provides strategic APIs to accelerate large language model (LLM) use cases.
 
+## What's New
+
+> [!IMPORTANT]
+> llmsherpa back end service is now fully open sourced under Apache 2.0 Licence. See [https://github.com/nlmatics/nlm-ingestor](https://github.com/nlmatics/nlm-ingestor)
+> - You can now run your own servers using a docker image!
+> - Support for different file formats: DOCX, PPTX, HTML, TXT, XML
+> - OCR Support is built in
+> - Blocks now have co-ordinates - use bbox propery of blocks such as sections
+> - A new indent parser to better align all headings in a document to their corresponding level
+> - The free server and paid server are not updated with latest code and users are requested to spawn their own servers using instructions in nlm-ingestor
+
 ## LayoutPDFReader
 
 Most PDF to text parsers do not provide layout information. Often times, even the sentences are split with arbritrary CR/LFs making it very difficult to find paragraph boundaries. This poses various challenges in chunking and adding long running contextual information such as section header to the passages while indexing/vectorizing PDFs for LLM applications such as retrieval augmented generation (RAG). 
@@ -19,13 +30,16 @@ LayoutPDFReader solves this problem by parsing PDFs along with hierarchical layo
 
 With LayoutPDFReader, developers can find optimal chunks of text to vectorize, and a solution for limited context window sizes of LLMs. 
 
-You can experiment with the library directly in Google Colab [here](https://colab.research.google.com/drive/1hx5Y2TxWriAuFXcwcjsu3huKyn39Q2id?usp=sharing)
+You can experiment with the library directly in **Google Colab** [here](https://colab.research.google.com/drive/1hx5Y2TxWriAuFXcwcjsu3huKyn39Q2id?usp=sharing)
 
 Here's a [writeup](https://open.substack.com/pub/ambikasukla/p/efficient-rag-with-document-layout?r=ft8uc&utm_campaign=post&utm_medium=web) explaining the problem and our approach. 
 
 Here'a LlamaIndex [blog](https://medium.com/@kirankurup/mastering-pdfs-extracting-sections-headings-paragraphs-and-tables-with-cutting-edge-parser-faea18870125) explaining the need for smart chunking. 
 
-API Reference: [https://llmsherpa.readthedocs.io/](https://llmsherpa.readthedocs.io/)
+**API Reference**: [https://llmsherpa.readthedocs.io/](https://llmsherpa.readthedocs.io/)
+
+[How to use with Google Gemini Pro](https://medium.com/nlmatics/using-google-gemini-pro-with-your-pdfs-7c191a2fcd98)
+[How to use with Cohere Embed3](https://medium.com/nlmatics/ask-your-pdf-with-cohere-embed-v3-3eb5dab36945)
 
 ### Important Notes
 
@@ -33,13 +47,12 @@ API Reference: [https://llmsherpa.readthedocs.io/](https://llmsherpa.readthedocs
 * OCR is currently not supported. Only PDFs with a text layer are supported.
 
 > [!NOTE]
-> LLMSherpa uses a free and open api server. The server does not store your PDFs except for temporary storage during parsing.
+> LLMSherpa uses a free and open api server. The server does not store your PDFs except for temporary storage during parsing. This server will be decommissioned soon. 
+> Self-host your own private server using instructions at [https://github.com/nlmatics/nlm-ingestor](https://github.com/nlmatics/nlm-ingestor)
 
 > [!IMPORTANT]
-> Private hosting is now available via [Microsoft Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/nlmaticscorp1686371242615.layout_pdf_parser?tab=Overview)!
-
-
-*For on premise hosting options, premium support or custom license options, create a custom licensing ticket [here](https://nlmatics.atlassian.net/servicedesk/customer/portals).*
+> Private available at [Microsoft Azure Marketplace](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/nlmaticscorp1686371242615.layout_pdf_parser?tab=Overview) 
+> will be decommissioned soon. Please move to your self-hosted instance using instructions at [https://github.com/nlmatics/nlm-ingestor](https://github.com/nlmatics/nlm-ingestor).
 
 
 ### Installation
