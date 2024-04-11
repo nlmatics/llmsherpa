@@ -101,8 +101,8 @@ LayoutPDFReader does smart chunking keeping related text due to document structu
 The following code creates a LlamaIndex query engine from LayoutPDFReader document chunks
 
 ```python
-from llama_index.readers.schema.base import Document
-from llama_index import VectorStoreIndex
+from llama_index.core import Document
+from llama_index.core import VectorStoreIndex
 
 index = VectorStoreIndex([])
 for chunk in doc.chunks():
