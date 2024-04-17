@@ -69,6 +69,8 @@ class LayoutPDFReader:
                     file_data = f.read()
                     pdf_file = (file_name, file_data, 'application/pdf')
         parser_response = self._parse_pdf(pdf_file)
+        if parser_response.status > 200:
+            raise ValueError(f"{parser_response.data}")
         response_json = json.loads(parser_response.data.decode("utf-8"))
         blocks = response_json['return_dict']['result']['blocks']
         return Document(blocks)
