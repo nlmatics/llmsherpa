@@ -242,13 +242,13 @@ class Paragraph(Block):
         recurse: bool
             If True, then the markdown of the children's children are also included
         """
-        para_text = "\n".join(self.sentences)
+        para_text = " ".join(self.sentences)
         if include_children:
             for child in self.children:
-                para_text += "\n" + child.to_markdown(
+                para_text += " " + child.to_markdown(
                     include_children=recurse, recurse=recurse
                 )
-        return para_text
+        return para_text + "\n"
 
 
 class Section(Block):
@@ -315,8 +315,8 @@ class Section(Block):
         markdown_str = f"{'#' * (self.level + 1)} {self.title}\n\n"
         if include_children:
             for child in self.children:
-                markdown_str += (
-                    child.to_markdown(include_children=recurse, recurse=recurse) + "\n"
+                markdown_str += child.to_markdown(
+                    include_children=recurse, recurse=recurse
                 )
         return markdown_str
 
@@ -381,18 +381,15 @@ class ListItem(Block):
         recurse: bool
             If True, then the markdown of the children's children are also included
         """
-        markdown_str = "- " + "\n  ".join(self.sentences)
+        markdown_str = "- " + " ".join(self.sentences)
         if include_children:
             if len(self.children) > 0:
-                markdown_str += "\n"
                 for child in self.children:
                     child_markdown = child.to_markdown(
                         include_children=recurse, recurse=recurse
                     )
-                    markdown_str += "\n".join(
-                        "  " + line for line in child_markdown.split("\n")
-                    )
-        return markdown_str
+                    markdown_str += "\n  " + child_markdown
+        return markdown_str + "\n"
 
 
 class TableCell(Block):
@@ -735,16 +732,35 @@ class Document:
         html_str = html_str + "</html>"
         return html_str
 
+    # TODO: Once the node structure generation bug is fixed, we could do this
+    # def to_markdown(self):
+    #     """
+    #     Returns markdown for the document by iterating through all the sections
+    #     """
+    #     markdown_str = ""
+    #     for section in self.sections():
+    #         markdown_str += (
+    #             section.to_markdown(include_children=True, recurse=True) + "\n"
+    #         )
+    #     return markdown_str
     def to_markdown(self):
         """
-        Returns markdown for the document by iterating through all the sections
+        Returns markdown for the document by iterating recursively through all the children
         """
-        markdown_str = ""
-        for section in self.sections():
-            markdown_str += (
-                section.to_markdown(include_children=True, recurse=True) + "\n"
-            )
-        return markdown_str
+
+        def iter_children_markdown(node):
+            markdown_content = ""
+            for child in node.children:
+                # Generate markdown for the current child
+                markdown_content += child.to_markdown()
+
+                # Recursively generate markdown for all children of the current node
+                markdown_content += iter_children_markdown(child)
+
+            return markdown_content
+
+        # Start the recursive markdown generation from the root node
+        return iter_children_markdown(self.root_node)
 
     def _get_top_sections(self):
         """
