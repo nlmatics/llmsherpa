@@ -506,6 +506,7 @@ class Document:
         self.reader = LayoutReader()
         self.root_node = self.reader.read(blocks_json)
         self.json = blocks_json
+        self.top_sections = self._get_top_sections()
     def chunks(self):
         """
         Returns all the chunks in the document. Chunking automatically splits the document into paragraphs, lists, and tables without any prior knowledge of the document structure.
@@ -521,21 +522,64 @@ class Document:
         Returns all the sections in the document. This is useful for getting all the sections in a document.
         """
         return self.root_node.sections()
-    def to_text(self):
+    
+    def to_text(self, include_duplicates = False):
         """
         Returns text of a document by iterating through all the sections '\n'
+        :param include_duplicates: bool
+            If True, then text of all the sections is included. If False, then only the text of the top sections is included.
         """
         text = ""
-        for section in self.sections():
-            text = text + section.to_text(include_children=True, recurse=True) + "\n"
+
+        if include_duplicates:
+            for section in self.sections():
+                text = text + section.to_text(include_children=True, recurse=True) + "\n"
+        else:
+            for section in self.top_sections:
+                text = text + section.to_text(include_children=True, recurse=True) + "\n"
+
         return text
                    
-    def to_html(self):
+    def to_html(self, include_duplicates = False):
         """
         Returns html for the document by iterating through all the sections
+        :param include_duplicates: bool
+            If True, then html of all the sections is included. If False, then only the html of the top sections is included.
         """
         html_str = "<html>"
-        for section in self.sections():
-            html_str = html_str + section.to_html(include_children=True, recurse=True)
+
+        if include_duplicates:
+            for section in self.sections():
+                html_str = html_str + section.to_html(include_children=True, recurse=True)
+        else:
+            for section in self.top_sections:
+                html_str = html_str + section.to_html(include_children=True, recurse=True)
+
         html_str = html_str + "</html>"
         return html_str
+    
+    def _get_top_sections(self):
+        """
+        Get the top sections of the document. A section is considered a top section if it is not a child of any other section in the document.
+        """
+        top_sections = list()
+        sections = self.sections()
+        sections_len = len(sections)
+
+        # Iterate over all the sections
+        for i in range(sections_len):
+            is_top_section = True   # Assume current section is a top section
+
+            # Check if the current section is a child of any other section
+            for j in range(sections_len):
+                if i != j:
+                    if sections[i] in sections[j].children:
+                        # If current section is a child of any other section, then it is not a top section
+                        is_top_section = False
+                        break
+                    
+            if is_top_section:
+                # Append the top section to the list of top sections
+                top_sections.append(sections[i])
+
+        return top_sections
