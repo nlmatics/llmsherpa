@@ -1,0 +1,32 @@
+[
+    {
+        "block_class": "cls_0",
+        "block_idx": 0,
+        "level": 0,
+        "page_idx": 0,
+        "sentences": [
+            "Lecture notes"
+        ],
+        "tag": "header"
+    },
+    {
+        "block_class": "cls_1",
+        "block_idx": 1,
+        "level": 1,
+        "page_idx": 0,
+        "sentences": [
+            "CS229"
+        ],
+        "tag": "header"
+    },
+    {
+        "block_class": "cls_2",
+        "block_idx": 2,
+        "level": 1,
+        "page_idx": 0,
+        "sentences": [
+            "Part VI"
+        ],
+        "tag": "header"
+    }
+]
