@@ -3,6 +3,7 @@ import json
 import os
 import re
 from llmsherpa.readers import LayoutReader
+from llmsherpa.readers import Document
 
 
 class TestLayoutReader(unittest.TestCase):
@@ -19,6 +20,12 @@ class TestLayoutReader(unittest.TestCase):
             reader = LayoutReader()
             doc = reader.read(doc_data)
         # reader.debug(pdf)
+        return doc
+    
+    def get_document(self, file_name):
+        with open(os.path.join(os.path.dirname(__file__), file_name)) as f:
+            doc_data = json.load(f)
+            doc = Document(doc_data)
         return doc
 
     def test_list_child_of_header(self):
@@ -127,6 +134,18 @@ class TestLayoutReader(unittest.TestCase):
         self.assertEqual(chunks[0].block_idx, 112)
         self.assertEqual(chunks[0].top, 64.8)
         self.assertEqual(chunks[0].left, 130.05)
+
+    def test_to_text(self):
+        doc = self.get_document("to_text_test.json")
+        
+        correct_text = "Lecture notes\nCS229\nPart VI\n"
+        self.assertEqual(doc.to_text(), correct_text)
+    
+    def test_to_html(self):
+        doc = self.get_document("to_html_test.json")
+        
+        correct_html = "<html><h1>Heading 1</h1><h2>Heading 2</h2><h2>Heading 3</h2></html>"
+        self.assertEqual(doc.to_html(), correct_html)
 
 if __name__ == '__main__':
     unittest.main()
