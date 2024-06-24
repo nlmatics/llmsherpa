@@ -489,8 +489,8 @@ class LayoutReader:
                     parent_stack.append(node)
                     parent.add_child(node)
                 else:
-                    while len(parent_stack) > 1 and parent_stack.pop().level > node.level:
-                        pass
+                    while len(parent_stack) > 1 and parent_stack[-1].level >= node.level:
+                        parent_stack.pop()
                     parent_stack[-1].add_child(node)            
                     parent_stack.append(node)
                 parent = node
