@@ -1,0 +1,102 @@
+[
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "Article I"
+        ],
+        "block_idx": 0,
+        "level": 0
+    },
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "Article II"
+        ],
+        "block_idx": 0,
+        "level": 0
+    },    
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "OutOfOrder Section 1"
+        ],
+        "block_idx": 0,
+        "level": 2
+    },
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "Section 2"
+        ],
+        "block_idx": 0,
+        "level": 1
+    },
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "2.1 Two point one"
+        ],
+        "block_idx": 0,
+        "level": 2
+    },
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "2.2 Two point two"
+        ],
+        "block_idx": 0,
+        "level": 2
+    },
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "Section 3"
+        ],
+        "block_idx": 0,
+        "level": 1
+    },
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "OutOfOrder Section 4"
+        ],
+        "block_idx": 0,
+        "level": 3
+    },
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "3.1 Three point one"
+        ],
+        "block_idx": 0,
+        "level": 2
+    },
+    {
+        "tag": "header",
+        "page_idx": 0,
+        "block_class": "cls_0",
+        "sentences": [
+            "3.2 Three point two"
+        ],
+        "block_idx": 0,
+        "level": 2
+    }
+]
