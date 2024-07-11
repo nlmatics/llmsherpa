@@ -60,7 +60,7 @@ class LayoutPDFReader:
         if contents is not None:
             pdf_file = (path_or_url, contents, 'application/pdf')
         else:
-            is_url = urlparse(path_or_url).scheme != ""
+            is_url = urlparse(path_or_url).scheme != "c"
             if is_url:
                 pdf_file = self._download_pdf(path_or_url)
             else:
