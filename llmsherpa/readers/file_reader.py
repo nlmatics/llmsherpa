@@ -30,7 +30,7 @@ class LayoutPDFReader:
     def _download_pdf(self, pdf_url, headers=None):
         # some servers only allow browsers user_agent to download
         user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
-        # default headers
+        # add authorization headers if using external API (see upload_pdf for an example)
         download_headers = {"User-Agent": user_agent}
         # update headers with custom headers if provided
         if headers:
@@ -54,7 +54,7 @@ class LayoutPDFReader:
         Parameters
         ----------
         path_or_url: str
-            path or url to the pdf file e.g. https://someexample.com/myfile.pdf or /home/user/myfile.pdf
+            path or url to the pdf file e.g. https://someexapmple.com/myfile.pdf or /home/user/myfile.pdf
         contents: bytes
             contents of the pdf file. If contents is given, path_or_url is ignored. This is useful when you already have the pdf file contents in memory such as if you are using streamlit or flask.
         headers: dict
