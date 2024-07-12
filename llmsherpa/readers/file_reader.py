@@ -27,12 +27,14 @@ class LayoutPDFReader:
         self.download_connection = urllib3.PoolManager()
         self.api_connection = urllib3.PoolManager()
 
-    def _download_pdf(self, pdf_url):
-        
-        # some servers only allow browers user_agent to download
+    def _download_pdf(self, pdf_url, headers=None):
+        # some servers only allow browsers user_agent to download
         user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/77.0.3865.90 Safari/537.36"
         # add authorization headers if using external API (see upload_pdf for an example)
         download_headers = {"User-Agent": user_agent}
+        # update headers with custom headers if provided
+        if headers:
+            download_headers.update(headers)
         download_response = self.download_connection.request("GET", pdf_url, headers=download_headers)
         file_name = os.path.basename(urlparse(pdf_url).path)
         # note you can change the file name here if you'd like to something else
@@ -45,7 +47,7 @@ class LayoutPDFReader:
         parser_response = self.api_connection.request("POST", self.parser_api_url, fields={'file': pdf_file})
         return parser_response
 
-    def read_pdf(self, path_or_url, contents=None):
+    def read_pdf(self, path_or_url, contents=None, headers=None):
         """
         Reads pdf from a url or path
 
@@ -55,6 +57,8 @@ class LayoutPDFReader:
             path or url to the pdf file e.g. https://someexapmple.com/myfile.pdf or /home/user/myfile.pdf
         contents: bytes
             contents of the pdf file. If contents is given, path_or_url is ignored. This is useful when you already have the pdf file contents in memory such as if you are using streamlit or flask.
+        headers: dict
+            custom headers to use when downloading the PDF from a URL.
         """
         # file contents were given
         if contents is not None:
@@ -62,7 +66,7 @@ class LayoutPDFReader:
         else:
             is_url = urlparse(path_or_url).scheme != ""
             if is_url:
-                pdf_file = self._download_pdf(path_or_url)
+                pdf_file = self._download_pdf(path_or_url, headers)
             else:
                 file_name = os.path.basename(path_or_url)
                 with open(path_or_url, "rb") as f:
