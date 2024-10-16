@@ -669,7 +669,6 @@ class Document:
         self.reader = LayoutReader()
         self.root_node = self.reader.read(blocks_json)
         self.json = blocks_json
-        self.top_sections = self._get_top_sections()
 
     def chunks(self):
         """
@@ -689,101 +688,32 @@ class Document:
         """
         return self.root_node.sections()
 
-    def to_text(self, include_duplicates=False):
+    def to_text(self):
         """
-        Returns text of a document by iterating through all the sections '\n'
-        :param include_duplicates: bool
-            If True, then text of all the sections is included. If False, then only the text of the top sections is included.
+        Returns text of a document by iterating through all the children
         """
         text = ""
-
-        if include_duplicates:
-            for section in self.sections():
-                text = (
-                    text + section.to_text(include_children=True, recurse=True) + "\n"
-                )
-        else:
-            for section in self.top_sections:
-                text = (
-                    text + section.to_text(include_children=True, recurse=True) + "\n"
-                )
-
+        for child in self.root_node.children:
+            text += child.to_text(include_children=True, recurse=True) + "\n"
         return text
 
-    def to_html(self, include_duplicates=False):
+    def to_html(self):
         """
-        Returns html for the document by iterating through all the sections
-        :param include_duplicates: bool
-            If True, then html of all the sections is included. If False, then only the html of the top sections is included.
+        Returns html for the document by iterating through all the children
         """
         html_str = "<html>"
-
-        if include_duplicates:
-            for section in self.sections():
-                html_str = html_str + section.to_html(
-                    include_children=True, recurse=True
-                )
-        else:
-            for section in self.top_sections:
-                html_str = html_str + section.to_html(
-                    include_children=True, recurse=True
-                )
-
-        html_str = html_str + "</html>"
+        for child in self.root_node.children:
+            html_str += child.to_html(include_children=True, recurse=True)
+        html_str += "</html>"
         return html_str
 
-    # TODO: Once the node structure generation bug is fixed, we could do this
-    # def to_markdown(self):
-    #     """
-    #     Returns markdown for the document by iterating through all the sections
-    #     """
-    #     markdown_str = ""
-    #     for section in self.sections():
-    #         markdown_str += (
-    #             section.to_markdown(include_children=True, recurse=True) + "\n"
-    #         )
-    #     return markdown_str
     def to_markdown(self):
         """
-        Returns markdown for the document by iterating recursively through all the children
+        Returns markdown for the document by iterating through all the children
         """
-
-        def iter_children_markdown(node):
-            markdown_content = ""
-            for child in node.children:
-                # Generate markdown for the current child
-                markdown_content += child.to_markdown()
-
-                # Recursively generate markdown for all children of the current node
-                markdown_content += iter_children_markdown(child)
-
-            return markdown_content
-
-        # Start the recursive markdown generation from the root node
-        return iter_children_markdown(self.root_node)
-
-    def _get_top_sections(self):
-        """
-        Get the top sections of the document. A section is considered a top section if it is not a child of any other section in the document.
-        """
-        top_sections = list()
-        sections = self.sections()
-        sections_len = len(sections)
-
-        # Iterate over all the sections
-        for i in range(sections_len):
-            is_top_section = True  # Assume current section is a top section
-
-            # Check if the current section is a child of any other section
-            for j in range(sections_len):
-                if i != j:
-                    if sections[i] in sections[j].children:
-                        # If current section is a child of any other section, then it is not a top section
-                        is_top_section = False
-                        break
-
-            if is_top_section:
-                # Append the top section to the list of top sections
-                top_sections.append(sections[i])
-
-        return top_sections
+        markdown_str = ""
+        for child in self.root_node.children:
+            markdown_str += (
+                child.to_markdown(include_children=True, recurse=True) + "\n"
+            )
+        return markdown_str
