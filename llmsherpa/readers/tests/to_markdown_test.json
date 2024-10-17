@@ -1,0 +1,42 @@
+[
+    {
+        "block_class": "cls_0",
+        "block_idx": 0,
+        "level": 0,
+        "page_idx": 0,
+        "sentences": [
+            "Heading 1"
+        ],
+        "tag": "header"
+    },
+    {
+        "block_class": "cls_0",
+        "block_idx": 1,
+        "level": 1,
+        "page_idx": 0,
+        "sentences": [
+            "Paragraph 1"
+        ],
+        "tag": "para"
+    },
+    {
+        "block_class": "cls_1",
+        "block_idx": 2,
+        "level": 1,
+        "page_idx": 0,
+        "sentences": [
+            "Heading 2"
+        ],
+        "tag": "header"
+    },
+    {
+        "block_class": "cls_2",
+        "block_idx": 3,
+        "level": 1,
+        "page_idx": 0,
+        "sentences": [
+            "Heading 3"
+        ],
+        "tag": "header"
+    }
+]
