@@ -21,7 +21,7 @@ class TestLayoutReader(unittest.TestCase):
             doc = reader.read(doc_data)
         # reader.debug(pdf)
         return doc
-    
+
     def get_document(self, file_name):
         with open(os.path.join(os.path.dirname(__file__), file_name)) as f:
             doc_data = json.load(f)
@@ -31,62 +31,71 @@ class TestLayoutReader(unittest.TestCase):
     def test_list_child_of_header(self):
         pdf = self.read_layout("list_test.json")
         self.assertEqual(len(pdf.children[0].children), 3)
-        self.assertEqual(pdf.children[0].children[0].tag,  'list_item')
+        self.assertEqual(pdf.children[0].children[0].tag, "list_item")
         # self.assertEqual(sum([1, 2, 3]), 6, "Should be 6")
 
     def test_list_child_of_para(self):
         doc = self.read_layout("list_test.json")
-        self.assertEqual(doc.children[0].children[2].tag,  'para')
-        self.assertEqual(len(doc.children[0].children[2].children),  2)
-        self.assertEqual(doc.children[0].children[2].children[0].tag,  'list_item')
+        self.assertEqual(doc.children[0].children[2].tag, "para")
+        self.assertEqual(len(doc.children[0].children[2].children), 2)
+        self.assertEqual(doc.children[0].children[2].children[0].tag, "list_item")
 
     def test_nested_lists(self):
         doc = self.read_layout("nested_list_test.json")
-        self.assertEqual(len(doc.children[0].children),  2)
-        self.assertEqual(len(doc.children[0].children[0].children),  2)
-        self.assertEqual(len(doc.children[1].children[0].children[1].children),  2)
+        self.assertEqual(len(doc.children[0].children), 2)
+        self.assertEqual(len(doc.children[0].children[0].children), 2)
+        self.assertEqual(len(doc.children[1].children[0].children[1].children), 2)
         parent_text = """
         Article II
         Section 1
         1.2 One point two
         """
         parent_text = self.clean_text(parent_text)
-        self.assertEqual(doc.children[1].children[0].children[1].children[0].parent_text(), parent_text)
+        self.assertEqual(
+            doc.children[1].children[0].children[1].children[0].parent_text(),
+            parent_text,
+        )
 
     def test_nested_lists_with_para(self):
         doc = self.read_layout("nested_list_test.json")
-        self.assertEqual(doc.children[2].children[0].tag,  'para')
+        self.assertEqual(doc.children[2].children[0].tag, "para")
         self.assertEqual(len(doc.children[2].children), 2)
-        self.assertEqual(len(doc.children[2].children[0].children),  2)
-        self.assertEqual(doc.children[2].children[1].tag,  'para')
- 
+        self.assertEqual(len(doc.children[2].children[0].children), 2)
+        self.assertEqual(doc.children[2].children[1].tag, "para")
+
     def test_nested_headers(self):
         doc = self.read_layout("header_test.json")
-        self.assertEqual(len(doc.children[0].children),  2)
-        self.assertEqual(len(doc.children[0].children[0].children),  2)
-        self.assertEqual(len(doc.children[1].children[0].children[1].children),  2)
-        self.assertEqual(doc.children[1].children[0].children[1].parent_text(), "Article II > Section 1")
+        self.assertEqual(len(doc.children[0].children), 2)
+        self.assertEqual(len(doc.children[0].children[0].children), 2)
+        self.assertEqual(len(doc.children[1].children[0].children[1].children), 2)
+        self.assertEqual(
+            doc.children[1].children[0].children[1].parent_text(),
+            "Article II > Section 1",
+        )
 
     def test_ooo_nested_headers(self):
         # OutOfOrder Header test case
         doc = self.read_layout("ooo_header_test.json")
-        self.assertEqual(len(doc.children[0].children),  0)
-        self.assertEqual(len(doc.children[1].children),  0)
-        self.assertEqual(len(doc.children[2].children),  2)
-        self.assertEqual(len(doc.children[2].children[0].children),  2)
-        self.assertEqual(len(doc.children[3].children[0].children[1].children),  2)
-        self.assertEqual(doc.children[3].children[0].children[1].parent_text(), "Article II > Section 1")
+        self.assertEqual(len(doc.children[0].children), 0)
+        self.assertEqual(len(doc.children[1].children), 0)
+        self.assertEqual(len(doc.children[2].children), 2)
+        self.assertEqual(len(doc.children[2].children[0].children), 2)
+        self.assertEqual(len(doc.children[3].children[0].children[1].children), 2)
+        self.assertEqual(
+            doc.children[3].children[0].children[1].parent_text(),
+            "Article II > Section 1",
+        )
 
     def test_ooo_nested_header_children(self):
         # OutOfOrder Header children test case
         doc = self.read_layout("ooo_header_child_test.json")
-        self.assertEqual(len(doc.children[0].children),  0)
-        self.assertEqual(len(doc.children[1].children),  3)
-        self.assertEqual(len(doc.children[1].children[0].children),  0)
-        self.assertEqual(len(doc.children[1].children[1].children),  2)
-        self.assertEqual(len(doc.children[1].children[2].children),  3)
-        self.assertEqual(len(doc.children[1].children[2].children[0].children),  0)
-    
+        self.assertEqual(len(doc.children[0].children), 0)
+        self.assertEqual(len(doc.children[1].children), 3)
+        self.assertEqual(len(doc.children[1].children[0].children), 0)
+        self.assertEqual(len(doc.children[1].children[1].children), 2)
+        self.assertEqual(len(doc.children[1].children[2].children), 3)
+        self.assertEqual(len(doc.children[1].children[2].children[0].children), 0)
+
     def test_table(self):
         doc = self.read_layout("table_test.json")
         tables = doc.tables()
@@ -102,14 +111,17 @@ class TestLayoutReader(unittest.TestCase):
         Following are our disclaimers:
         a) Disclaimer 1
         b) Disclaimer 2
-        """        
+        """
         correct_text = self.clean_text(correct_text)
-        self.assertEqual(paras[0].to_text(include_children=True, recurse=True), correct_text.replace("  *", ""))
+        self.assertEqual(
+            paras[0].to_text(include_children=True, recurse=True),
+            correct_text.replace("  *", ""),
+        )
 
     def test_chunk_iterator(self):
         doc = self.read_layout("chunk_test.json")
         chunks = doc.chunks()
-        
+
         self.assertEqual(chunks[2].to_text(), "Article II")
         correct_text = """
         Article I
@@ -139,7 +151,7 @@ class TestLayoutReader(unittest.TestCase):
     def test_meta_data(self):
         doc = self.read_layout("table_test.json")
         chunks = doc.chunks()
-        
+
         self.assertEqual(chunks[0].page_idx, 5)
         self.assertEqual(chunks[0].block_idx, 112)
         self.assertEqual(chunks[0].top, 64.8)
@@ -147,15 +159,26 @@ class TestLayoutReader(unittest.TestCase):
 
     def test_to_text(self):
         doc = self.get_document("to_text_test.json")
-        
+
         correct_text = "Lecture notes\nCS229\nPart VI\n"
         self.assertEqual(doc.to_text(), correct_text)
-    
+
     def test_to_html(self):
         doc = self.get_document("to_html_test.json")
-        
-        correct_html = "<html><h1>Heading 1</h1><h2>Heading 2</h2><h2>Heading 3</h2></html>"
+
+        correct_html = (
+            "<html><h1>Heading 1</h1><h2>Heading 2</h2><h2>Heading 3</h2></html>"
+        )
         self.assertEqual(doc.to_html(), correct_html)
 
-if __name__ == '__main__':
+    def test_to_markdown(self):
+        doc = self.get_document("to_markdown_test.json")
+
+        correct_markdown = (
+            "# Heading 1\n\nParagraph 1\n## Heading 2\n\n## Heading 3\n\n\n"
+        )
+        self.assertEqual(doc.to_markdown(), correct_markdown)
+
+
+if __name__ == "__main__":
     unittest.main()
